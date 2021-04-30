@@ -2,9 +2,9 @@ import sys
 import time
 import requests
 import json
-
 from operator import itemgetter
 
+from Classes.Util.TransmitterReceiver import TransmitterReceiver
 
 class GameCrawler:
     """ 게임 관련 크롤러 """

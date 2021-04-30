@@ -2,8 +2,8 @@ import time
 import requests
 import json
 
-from Classes.Util.UnicodeUtil import *
-
+from Classes.Util.UnicodeUtil import UnicodeUtil
+from Classes.Util.TransmitterReceiver import TransmitterReceiver
 
 class MovieCrawler:
     """ 영화정보 크롤러 """
