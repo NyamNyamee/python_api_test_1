@@ -2,7 +2,7 @@ import time
 import requests
 import json
 
-from Util.UnicodeUtil import *
+from Classes.Util.UnicodeUtil import *
 
 
 class MovieCrawler:

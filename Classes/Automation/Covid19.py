@@ -71,12 +71,13 @@ class Covid19Crawler:
         issue_count = parsed_object['currentCount']
         list_data = parsed_object['data']
 
-        print('검색 개수: {0}'.format(str(issue_count)))
-        print('작성일        |        국가        |        타이틀')
         if not list_data:
             print('해당 국가의 이슈는 없습니다.')
             print()
             return
+
+        print('작성일        |        국가        |        타이틀')
+        print('검색 개수: {0}'.format(str(issue_count)))
         for index, component in enumerate(list_data):
             issue_written_date = component['wrt_dt']
             issue_nation_name = component['country_nm']

@@ -1,15 +1,20 @@
 import sys
 import time
 
+from Classes.Util.Authentication import Authentication
+
 from Classes.Automation.Movie import MovieCrawler
 from Classes.Automation.Music import MusicCrawler
 from Classes.Automation.Weather import WeatherCrawler
 from Classes.Automation.Covid19 import Covid19Crawler
+from Classes.Automation.Game import GameCrawler
+from Classes.Automation.Accident import AccidentCrawler
+from Classes.Automation.Kakao import KakaoCrawler
 
 if __name__ == '__main__':
     while True:
         try:
-            main_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:프로그램종료 | 1:영화검색 | 2:최신곡리스트 | 3:수도권 날씨정보 | 4:코로나19 정보\n'))
+            main_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:프로그램종료 | 1:영화검색 | 2:음악검색 | 3:날씨검색 | 4:코로나19정보 | 5:게임정보 | 6:사건사고정보 | 7:카카오\n'))
         except Exception as e:
             print('[경고] 숫자만 입력해 주세요.\n')
             continue
@@ -20,9 +25,7 @@ if __name__ == '__main__':
 
         elif main_menu_number == 1:
             """ 영화정보 크롤링 """
-            kofic_key = 'ba4bcd991407f6c2f27ec9244f5f9df7'  # 영화진흥위원회 key
-
-            movie_crawler = MovieCrawler(kofic_key=kofic_key)
+            movie_crawler = MovieCrawler(kofic_key=Authentication.KOFIC_KEY)
 
             try:
                 movie_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:메인메뉴 | 1:박스오피스검색 | 2:영화검색 | 3:영화인검색\n'))
@@ -78,7 +81,7 @@ if __name__ == '__main__':
             music_crawler = MusicCrawler()
 
             try:
-                music_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:메인메뉴 | 1:국내 | 2:해외\n'))
+                music_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:메인메뉴 | 1:최신100곡(국내) | 2:최신100곡(해외)\n'))
             except Exception as e:
                 print('[경고] 숫자만 입력해 주세요.\n')
                 continue
@@ -99,9 +102,7 @@ if __name__ == '__main__':
 
         elif main_menu_number == 3:
             """ 날씨정보 크롤링 """
-            data_gov_key = 'c%2F4Fz%2BWXkuRo%2F%2BhAuE8b3Bp6iMGrThZOhKKG4DCUNYizAbD8d6xb0VxxQi1HjV1RdQbVFIu8Kb%2BdJ%2FG3jLAY8A%3D%3D'  # 공공데이터포털  key
-
-            weather_crawler = WeatherCrawler(data_gov_key=data_gov_key)
+            weather_crawler = WeatherCrawler(data_gov_key=Authentication.DATA_GOV_KEY)
 
             try:
                 weather_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:메인메뉴 | 1:지난 날씨정보 | 2:오늘 날씨정보\n'))
@@ -149,9 +150,7 @@ if __name__ == '__main__':
 
         elif main_menu_number == 4:
             """ 코로나19 크롤링 """
-            data_gov_key = 'c%2F4Fz%2BWXkuRo%2F%2BhAuE8b3Bp6iMGrThZOhKKG4DCUNYizAbD8d6xb0VxxQi1HjV1RdQbVFIu8Kb%2BdJ%2FG3jLAY8A%3D%3D'  # 공공데이터포털  key
-
-            covid19_crawler = Covid19Crawler(data_gov_key=data_gov_key)
+            covid19_crawler = Covid19Crawler(data_gov_key=Authentication.DATA_GOV_KEY)
 
             try:
                 covid19_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:메인메뉴 | 1:전국예방접종센터 조회 | 2:국가별 이슈\n'))
@@ -176,9 +175,113 @@ if __name__ == '__main__':
             else:
                 print('[알림] 메뉴 목록을 선택해 주세요.\n')
                 continue
+                
+        elif main_menu_number == 5:
+            """ 게임 크롤링 """
+            game_crawler = GameCrawler(steam_key=Authentication.STEAM_KEY)
 
+            try:
+                game_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:메인메뉴 | 1:스팀게임조회\n'))
+            except Exception as e:
+                print('[경고] 숫자만 입력해 주세요.\n')
+                continue
+
+            if game_menu_number == 0:
+                """ 메인 메뉴로 이동 """
+                continue
+
+            elif game_menu_number == 1:
+                """ 스팀게임조회 """
+                game_name = input('[알림] 검색할 게임명(영문 소문자) 입력해 주세요. 미입력 시 전체 게임 조회\n')
+                game_crawler.search_steam_game_name_by_game_name(game_name=game_name)
+
+            else:
+                print('[알림] 메뉴 목록을 선택해 주세요.\n')
+                continue
+                
+        elif main_menu_number == 6:
+            """ 사건사고 크롤링 """
+            accident_crawler = AccidentCrawler(data_gov_key=Authentication.DATA_GOV_KEY)
+
+            try:
+                accident_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:메인메뉴 | 1:사망교통사고정보\n'))
+            except Exception as e:
+                print('[경고] 숫자만 입력해 주세요.\n')
+                continue
+
+            if accident_menu_number == 0:
+                """ 메인 메뉴로 이동 """
+                continue
+
+            elif accident_menu_number == 1:
+                """ 사망교통사고정보조회 """
+                try:
+                    accident_search_year = int(input('[알림] 조회 년도를 입력하세요: '))
+                    accident_search_sido = str(input('[알림] 조회 지역-시/도를 입력하세요: '))
+                    accident_search_gugun = str(input('[알림] 조회 지역-시/군/구를 입력하세요: '))
+                except Exception as e:
+                    print('[경고] 정확한 값을 입력해 주세요.\n')
+                    continue
+                try:
+                    accident_search_sido_code = accident_crawler.transfer_search_string_to_code(response_column=1, response_value=accident_search_sido)  # 검색에 포함되어 있는 지역을 코드로 변환
+                    accident_search_gugun_code = accident_crawler.transfer_search_string_to_code(response_column=2, response_value=accident_search_gugun, sido_code=accident_search_sido_code)  # 검색에 포함되어 있는 지역을 코드로 변환
+                except Exception as e:
+                    print(str(e))
+                    print()
+                    continue
+                accident_crawler.get_car_accident_info_by_year_and_location(search_year=accident_search_year, search_sido=accident_search_sido_code, search_gugun=accident_search_gugun_code)
+
+            else:
+                print('[알림] 메뉴 목록을 선택해 주세요.\n')
+                continue
+
+        elif main_menu_number == 7:
+            """ 카카오 크롤링 """
+            kakao_crawler = KakaoCrawler(kakao_inwoo_admin_key=Authentication.KAKAO_APP_INWOO_ADMIN_KEY, kakao_inwoo_token=Authentication.KAKAO_APP_INWOO_TOKEN)
+
+            try:
+                kakao_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:메인메뉴 | 1:사용자정보 | 2:사용자토큰정보 | 3:나에게문자보내기\n'))
+            except Exception as e:
+                print('[경고] 숫자만 입력해 주세요.\n')
+                continue
+
+            if kakao_menu_number == 0:
+                """ 메인 메뉴로 이동 """
+                continue
+
+            elif kakao_menu_number == 1:
+                """ 사용자 정보조회 """
+                try:
+                    kakao_crawler.get_kakao_user_info()
+                except Exception as e:
+                    print(str(e))
+                    print()
+                    continue
+                    
+            elif kakao_menu_number == 2:
+                """ 사용자 토큰 정보조회 """
+                try:
+                    kakao_crawler.get_kakao_token_info()
+                except Exception as e:
+                    print(str(e))
+                    print()
+                    continue
+
+            elif kakao_menu_number == 3:
+                """ 나에게 문자보내기 """
+                kakao_send_message = str(input('[알림] 전송할 문자를 입력하세요: '))
+                try:
+                    kakao_crawler.kakao_send_message_myself(message_text=kakao_send_message)
+                except Exception as e:
+                    print(str(e))
+                    print()
+                    continue
+
+            else:
+                print('[알림] 메뉴 목록을 선택해 주세요.\n')
+                continue
         else:
             print('[알림] 메뉴 목록을 선택해 주세요.\n')
             continue
             
-    print('[출처] 영화진흥위원회, FLO, 공공데이터포털')
+    print('[출처] 영화진흥위원회, FLO, 공공데이터포털, SteamWorks, Kakao developers')
