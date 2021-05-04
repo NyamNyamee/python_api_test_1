@@ -83,7 +83,7 @@ class KakaoCrawler:
         parsed_object = json.loads(res.text)
 
         try:
-            kakao_inwoo_app_id = parsed_object['id']
+            kakao_inwoo_app_user_id = parsed_object['id']
             kakao_inwoo_connected_time = parsed_object['connected_at']
             kakao_inwoo_app_account_info = parsed_object['kakao_account']
             kakao_inwoo_app_account_profile = kakao_inwoo_app_account_info['profile']
@@ -94,8 +94,8 @@ class KakaoCrawler:
             kakao_inwoo_app_account_profile_birthday = kakao_inwoo_app_account_info['birthday']
             kakao_inwoo_app_account_profile_gender = kakao_inwoo_app_account_info['gender']
 
-            print('App ID: {0}\n연결된 시점: {1}\n닉네임: {2}\n프로필 이미지 링크: {3}\n이메일: {4}\n연령대: {5}\n생일: {6}\n성별: {7}'.format(
-                kakao_inwoo_app_id, kakao_inwoo_connected_time,
+            print('회원번호: {0}\n연결된 시점: {1}\n닉네임: {2}\n프로필 이미지 링크: {3}\n이메일: {4}\n연령대: {5}\n생일: {6}\n성별: {7}'.format(
+                kakao_inwoo_app_user_id, kakao_inwoo_connected_time,
                 kakao_inwoo_app_account_profile_nickname,
                 kakao_inwoo_app_account_profile_image_url,
                 kakao_inwoo_app_account_profile_email,
@@ -127,7 +127,14 @@ class KakaoCrawler:
         # 응답의 텍스트를 json형태로 파싱
         parsed_object = json.loads(res.text)
 
-        print(parsed_object)
+        kakao_inwoo_app_user_id = parsed_object['id']
+        kakao_inwoo_connected_time = parsed_object['expires_in']
+        kakao_inwoo_app_id = parsed_object['app_id']
+
+        print('회원번호: {0}\n만료시간(초): {1}\nApp ID: {2}'.format(kakao_inwoo_app_user_id,
+                                                            str(round(int(kakao_inwoo_connected_time) / 60)) + "분 " +
+                                                            str(int(kakao_inwoo_connected_time) % 60) + "초",
+                                                            kakao_inwoo_app_id))
         print()
 
     def kakao_send_message_myself(self, kakao_token, text_message):

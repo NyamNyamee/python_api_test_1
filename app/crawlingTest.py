@@ -64,7 +64,7 @@ if __name__ == '__main__':
 
             elif movie_menu_number == 2:
                 """ 영화진흥위원회 영화 목록, 상세정보 검색 """
-                movie_name = input('[알림] 검색할 영화제목을 입력하세요.\n').strip()
+                movie_name = input('[알림] 검색할 영화제목을 입력하세요: ').strip()
                 try:
                     movie_crawler.get_movie_list_by_movie_name(movie_name=movie_name)
                 except Exception as e:
@@ -73,7 +73,7 @@ if __name__ == '__main__':
 
             elif movie_menu_number == 3:
                 """ 영화진흥위원회 영화인 목록 검색 """
-                person_name = input('[알림] 검색할 영화인 이름을 입력하세요.\n').strip()
+                person_name = input('[알림] 검색할 영화인 이름을 입력하세요: ').strip()
                 try:
                     movie_crawler.get_movie_person_by_person_name(person_name=person_name)
                 except Exception as e:
@@ -178,7 +178,7 @@ if __name__ == '__main__':
 
             elif covid19_menu_number == 2:
                 """ 공공데이터포털 코로나19 예방접종센터 조회 """
-                covid19_nation_name = input('[알림] 검색할 국가를 입력해 주세요\n')
+                covid19_nation_name = input('[알림] 검색할 국가를 입력해 주세요: ')
                 covid19_crawler.search_national_issue_by_nation_name(nation_name=covid19_nation_name)
 
             else:
@@ -263,7 +263,7 @@ if __name__ == '__main__':
 
             try:
                 kakao_crawler.get_new_kakao_access_code()
-                kakao_app_inwoo_access_code = str(input('[알림] 위 링크에서 카카오 로그인 후 URL에 나타난 code값을 입력해 주세요\n'))
+                kakao_app_inwoo_access_code = str(input('[알림] 위 링크에서 카카오 로그인 후 URL에 나타난 code값을 입력해 주세요: '))
             except Exception as e:
                 print(str(e))
                 print()
