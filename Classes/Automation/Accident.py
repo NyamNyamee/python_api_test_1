@@ -14,21 +14,21 @@ class AccidentCrawler:
 
     def get_car_accident_info_by_year_and_location(self, search_year, search_sido, search_gugun):
         """ 연도별, 지역별 교통사고정보 조회 """
-        # url
-        url = 'http://apis.data.go.kr/B552061/AccidentDeath/getRestTrafficAccidentDeath?serviceKey={0}&type=json&searchYear={1}&siDo={2}&guGun={3}&pageNo=1&numOfRows=100'.format(
-            self.data_gov_key, search_year, search_sido, search_gugun)
+        host = 'http://apis.data.go.kr'
+        path = '/B552061/AccidentDeath/getRestTrafficAccidentDeath'
+        headers = None
+        query = '?serviceKey={0}&type=json&searchYear={1}&siDo={2}&guGun={3}&pageNo=1&numOfRows=100'.format(self.data_gov_key, search_year, search_sido, search_gugun)
+        method = 'GET'
+        data = None
 
+        # 응답
         try:
-            # 요청보내고 응답 저장
-            res = requests.get(url)
-            # 응답의 텍스트
-            res_text = res.text
-            # 응답의 텍스트를 json형태로 파싱
-            parsed_object = json.loads(res_text)
-            # 위 두줄과 아래 한줄은 동일
-            # parsed_object = res.json()
+            res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query, method=method, data=data)
         except Exception as e:
-            raise RuntimeError('공공데이터포털로부터 정보를 가져오는 데에 실패했습니다.')
+            raise RuntimeError("[공공데이터포털] 지난 날씨정보 요청 실패: " + str(e))
+
+        # 응답의 바디를 json형태로 파싱
+        parsed_object = json.loads(res.text)
 
         list_items = parsed_object['items']['item']
 
@@ -38,8 +38,7 @@ class AccidentCrawler:
             return
 
         print('검색 건수: {0}'.format(str(len(list_items))))
-        print(
-            '발생월일시    |    주야구분    |    발생요일    |    사망자수    |    부상자수    |    사고유형 대분류    |    사고유형 중분류    |    사고유형    |    법규위반내용    |    도로형태    |    가해차종    |    피해차종')
+        print('발생월일시    |    주야구분    |    발생요일    |    사망자수    |    부상자수    |    사고유형 대분류    |    사고유형 중분류    |    사고유형    |    법규위반내용    |    도로형태    |    가해차종    |    피해차종')
         for index, component in enumerate(list_items):
             accident_occurrence_date = component['occrrnc_dt']
             accident_day_night_code = component['dght_cd']

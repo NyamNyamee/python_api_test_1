@@ -12,20 +12,21 @@ class MusicCrawler:
     @ staticmethod
     def get_latest_song(location):
         """ FLO 해외, 국내 최신곡 검색 """
-        # url생성
-        url = 'https://www.music-flo.com/api/meta/v1/track/{0}/new?page=1&size=100'.format(location)
+        host = 'https://www.music-flo.com'
+        path = '/api/meta/v1/track/{0}/new'.format(location)
+        headers = None
+        query = '?page=1&size=100'
+        method = 'GET'
+        data = None
 
+        # 응답
         try:
-            # 요청보내고 응답 저장
-            res = requests.get(url)
-            # 응답의 텍스트
-            res_text = res.text
-            # 응답의 텍스트를 json형태로 파싱
-            parsed_object = json.loads(res_text)
-            # 위 두줄을 아래와 같이 사용해도 됨
-            # parsed_object = res.json()
+            res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query, method=method, data=data)
         except Exception as e:
-            raise RuntimeError('FLO MUSIC 으로부터 정보를 가져오는 데에 실패했습니다.')
+            raise RuntimeError("[FLO] 최신곡 정보 요청 실패: " + str(e))
+
+        # 응답의 바디를 json형태로 파싱
+        parsed_object = json.loads(res.text)
 
         # 음악 리스트만 가져옴
         list_latest_music = parsed_object['data']['list']

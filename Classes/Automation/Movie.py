@@ -13,21 +13,21 @@ class MovieCrawler:
 
     def get_box_office_list_by_date(self, target_date=str(int(time.strftime('%Y%m%d')) - 1)):
         """ 날짜로 박스오피스 검색 """
-        # url생성
-        url = 'http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key={0}&targetDt={1}'.format(
-            self.kofic_key, target_date)
+        host = 'http://www.kobis.or.kr'
+        path = '/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json'
+        headers = None
+        query = '?key={0}&targetDt={1}'.format(self.kofic_key, target_date)
+        method = 'GET'
+        data = None
 
+        # 응답
         try:
-            # 요청보내고 응답 저장
-            res = requests.get(url)
-            # 응답의 텍스트
-            res_text = res.text
-            # 응답의 텍스트를 json형태로 파싱
-            parsed_object = json.loads(res_text)
-            # 위 두줄을 아래와 같이 사용해도 됨
-            # parsed_object = res.json()
+            res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query, method=method, data=data)
         except Exception as e:
-            raise RuntimeError('영화진흥위원회로부터 정보를 가져오는 데에 실패했습니다.')
+            raise RuntimeError("[영화진흥위원회] 박스오피스 정보 요청 실패: " + str(e))
+
+        # 응답의 바디를 json형태로 파싱
+        parsed_object = json.loads(res.text)
 
         # 박스오피스 리스트만 가져옴
         list_box_office = parsed_object['boxOfficeResult']['dailyBoxOfficeList']
@@ -51,21 +51,21 @@ class MovieCrawler:
 
     def get_movie_list_by_movie_name(self, movie_name):
         """ 영화 제목으로 영화 목록 검색 """
-        # url생성
-        url = 'http://kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key={0}&movieNm={1}'.format(
-            self.kofic_key, movie_name)
+        host = 'http://kobis.or.kr'
+        path = '/kobisopenapi/webservice/rest/movie/searchMovieList.json'
+        headers = None
+        query = '?key={0}&movieNm={1}'.format(self.kofic_key, movie_name)
+        method = 'GET'
+        data = None
 
+        # 응답
         try:
-            # 요청보내고 응답 저장
-            res = requests.get(url)
-            # 응답의 텍스트
-            res_text = res.text
-            # 응답의 텍스트를 json형태로 파싱
-            parsed_object = json.loads(res_text)
-            # 위 두줄을 아래와 같이 사용해도 됨
-            # parsed_object = res.json()
+            res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query, method=method, data=data)
         except Exception as e:
-            raise RuntimeError('영화진흥위원회로부터 정보를 가져오는 데에 실패했습니다.')
+            raise RuntimeError("[영화진흥위원회] 영화 목록 정보 요청 실패: " + str(e))
+
+        # 응답의 바디를 json형태로 파싱
+        parsed_object = json.loads(res.text)
 
         # 조회 결과
         dict_movie_result = parsed_object['movieListResult']
@@ -123,20 +123,21 @@ class MovieCrawler:
             print()
             return
 
-        # url생성
-        url = 'http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key={0}&movieCd={1}'.format(
-            self.kofic_key, list_movie_code[selected_movie_code - 1])
+        host = 'http://www.kobis.or.kr'
+        path = '/kobisopenapi/webservice/rest/movie/searchMovieInfo.json'
+        headers = None
+        query = '?key={0}&movieCd={1}'.format(self.kofic_key, list_movie_code[selected_movie_code - 1])
+        method = 'GET'
+        data = None
+
+        # 응답
         try:
-            # 요청보내고 응답 저장
-            res = requests.get(url)
-            # 응답의 텍스트
-            res_text = res.text
-            # 응답의 텍스트를 json형태로 파싱
-            parsed_object = json.loads(res_text)
-            # 위 두줄을 아래와 같이 사용해도 됨
-            # parsed_object = res.json()
+            res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query, method=method, data=data)
         except Exception as e:
-            raise RuntimeError('영화진흥위원회로부터 정보를 가져오는 데에 실패했습니다.')
+            raise RuntimeError("[영화진흥위원회] 영화 목록 정보 요청 실패: " + str(e))
+
+        # 응답의 바디를 json형태로 파싱
+        parsed_object = json.loads(res.text)
 
         movie_info_dict = parsed_object['movieInfoResult']['movieInfo']
 
@@ -162,21 +163,22 @@ class MovieCrawler:
 
     def get_movie_person_by_person_name(self, person_name):
         """ 이름으로 영화인 목록 검색 """
-        # url생성
-        url = 'http://www.kobis.or.kr/kobisopenapi/webservice/rest/people/searchPeopleList.json?key={0}&peopleNm={1}'.format(
-            self.kofic_key, person_name)
+        host = 'http://www.kobis.or.kr'
+        path = '/kobisopenapi/webservice/rest/people/searchPeopleList.json'
+        headers = None
+        query = '?key={0}&peopleNm={1}'.format(self.kofic_key, person_name)
+        method = 'GET'
+        data = None
 
+        # 응답
         try:
-            # 요청보내고 응답 저장
-            res = requests.get(url)
-            # 응답의 텍스트
-            res_text = res.text
-            # 응답의 텍스트를 json형태로 파싱
-            parsed_object = json.loads(res_text)
-            # 위 두줄을 아래와 같이 사용해도 됨
-            # parsed_object = res.json()
+            res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query,
+                                                               method=method, data=data)
         except Exception as e:
-            raise RuntimeError('영화진흥위원회로부터 정보를 가져오는 데에 실패했습니다.')
+            raise RuntimeError("[영화진흥위원회] 영화 목록 정보 요청 실패: " + str(e))
+
+        # 응답의 바디를 json형태로 파싱
+        parsed_object = json.loads(res.text)
 
         # 검색 결과
         dict_people_result = parsed_object['peopleListResult']
@@ -190,7 +192,7 @@ class MovieCrawler:
             return
 
         # 결과출력
-        print('번호    |    이름    |        이름(영문)        |        역할        |    필모그래피')
+        print('번호    |        이름        |        이름(영문)        |        역할        |    필모그래피')
         for index, component in enumerate(list_people_search):
             people_name_kor = component['peopleNm']
             people_name_eng = component['peopleNmEn']
@@ -198,7 +200,7 @@ class MovieCrawler:
             people_filmography_names = component['filmoNames']
 
             print('{0:8}{1}{2}{3}{4}'.format(str(index + 1),
-                                             UnicodeUtil.fill_str_with_space(string=people_name_kor, max_size=13),
+                                             UnicodeUtil.fill_str_with_space(string=people_name_kor, max_size=26),
                                              UnicodeUtil.fill_str_with_space(string=people_name_eng, max_size=26),
                                              UnicodeUtil.fill_str_with_space(string=people_role_name, max_size=22),
                                              people_filmography_names

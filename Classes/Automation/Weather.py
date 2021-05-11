@@ -3,6 +3,7 @@ import time
 import requests
 import json
 
+from Classes.Util.TransmitterReceiver import TransmitterReceiver
 
 class WeatherCrawler:
     """ 날씨정보 크롤러 """
@@ -12,21 +13,21 @@ class WeatherCrawler:
 
     def get_ex_weather_info(self, start_date, end_date, weather_location):
         """ 지난 날씨정보 검색 """
-        # url
-        url = 'http://apis.data.go.kr/1360000/AsosHourlyInfoService/getWthrDataList?serviceKey={0}&pageNo=1&numOfRows=100&dataType=JSON&dataCd=ASOS&dateCd=HR&startDt={1}&startHh=01&endDt={2}&endHh=23&stnIds={3}'.format(
-            self.data_gov_key, start_date, end_date, weather_location)
+        host = 'http://apis.data.go.kr'
+        path = '/1360000/AsosHourlyInfoService/getWthrDataList'
+        headers = None
+        query = '?serviceKey={0}&pageNo=1&numOfRows=100&dataType=JSON&dataCd=ASOS&dateCd=HR&startDt={1}&startHh=01&endDt={2}&endHh=23&stnIds={3}'.format(self.data_gov_key, start_date, end_date, weather_location)
+        method = 'GET'
+        data = None
 
+        # 응답
         try:
-            # 요청보내고 응답 저장
-            res = requests.get(url)
-            # 응답의 텍스트
-            res_text = res.text
-            # 응답의 텍스트를 json형태로 파싱
-            parsed_object = json.loads(res_text)
-            # 위 두줄을 아래와 같이 사용해도 됨
-            # parsed_object = res.json()
+            res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query, method=method, data=data)
         except Exception as e:
-            raise RuntimeError('공공데이터포털로부터 정보를 가져오는 데에 실패했습니다.')
+            raise RuntimeError("[공공데이터포털] 지난 날씨정보 요청 실패: " + str(e))
+
+        # 응답의 바디를 json형태로 파싱
+        parsed_object = json.loads(res.text)
 
         # 날씨 리스트만 가져옴
         list_items = parsed_object['response']['body']['items']['item']
