@@ -149,7 +149,7 @@ class GameCrawler:
             print('정복자레벨: {0}\n길드명: {1}\n몬스터킬수 일반/엘리트/하드코어: {2}\n영웅:'.format(paragon_level, guild_name,
                                                                              kills_monsters + '/' + kills_elites + '/' + kills_hardcore_monsters))
             for index, component in enumerate(heroes):
-                print('\t{0}. 이름:{1}\t클래스:{2}\t레벨:{3}'.format(str(index + 1), component['name'], component['class'], str(component['level'])))
+                print('\t{0}. 이름:{1:30}\t클래스:{2:20}\t레벨:{3}'.format(str(index + 1), component['name'], component['class'], str(component['level'])))
 
             self.get_blizzard_diablo_3_hero_info(d3_battle_tag=d3_battle_tag, list_heroes=heroes)
             print()

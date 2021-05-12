@@ -142,7 +142,7 @@ class MovieCrawler:
         movie_info_dict = parsed_object['movieInfoResult']['movieInfo']
 
         # 결과출력
-        print('러닝타임    |    제작연도    |    개봉일자    |        감독        |        제목(국문)        |        제목(영문)')
+        print('러닝타임(분)    |    제작연도    |    개봉일자    |        감독        |        제목(국문)        |        제목(영문)')
         detail_movie_name_kor = movie_info_dict['movieNm']
         detail_movie_movie_name_eng = movie_info_dict['movieNmEn']
         detail_movie_movie_show_time = movie_info_dict['showTm']
@@ -151,7 +151,7 @@ class MovieCrawler:
         list_detail_movie_movie_directors = movie_info_dict['directors']
         detail_movie_movie_director = 'unknown' if not list_detail_movie_movie_directors else list_detail_movie_movie_directors[0]['peopleNm']
 
-        print('{0:11}{1:16}{2:15}{3}{4}{5}'.format(
+        print('{0:15}{1:16}{2:15}{3}{4}{5}'.format(
             detail_movie_movie_show_time,
             detail_movie_movie_prod_year,
             detail_movie_movie_open_date,

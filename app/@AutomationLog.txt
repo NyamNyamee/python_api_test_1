@@ -1,0 +1,9 @@
+2021-05-12 17:17:08.422 uiAutoMationTest.py[18] <module> -> Find Control Timeout: {Name: '검색 상자', ControlType: EditControl}
+2021-05-12 17:20:25.248 uiAutoMationTest.py[18] <module> -> Find Control Timeout: {Name: '검색 상자', ControlType: EditControl}
+2021-05-12 17:22:42.037 uiAutoMationTest.py[18] <module> -> Find Control Timeout: {Name: '검색 상자', ControlType: WindowControl}
+2021-05-12 17:23:28.631 uiAutoMationTest.py[18] <module> -> Find Control Timeout: {Name: '검색 상자', ControlType: EditControl}
+2021-05-12 17:24:21.468 uiAutoMationTest.py[18] <module> -> Find Control Timeout: {Name: '캡처 도구, 앱', ControlType: EditControl}
+2021-05-12 17:34:36.498 uiAutoMationTest.py[18] <module> -> Find Control Timeout: {Name: '무엇이든 찾아보세요', ControlType: ButtonControl}
+2021-05-12 17:35:15.105 uiAutoMationTest.py[18] <module> -> Find Control Timeout: {Name: '무엇이든 찾아보세요', ControlType: ButtonControl}
+2021-05-12 17:35:33.543 pydevd_xml.py[309] var_to_xml -> Find Control Timeout: {Name: '무엇이든 찾아보세요', ControlType: ButtonControl}
+2021-05-12 17:37:15.592 uiAutoMationTest.py[18] <module> -> Find Control Timeout: {Name: '캡처 도구, 앱', ControlType: ListItemControl}
