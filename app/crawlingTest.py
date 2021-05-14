@@ -12,6 +12,7 @@ from Classes.CrawlingTest.Covid19 import Covid19Crawler
 from Classes.CrawlingTest.Game import GameCrawler
 from Classes.CrawlingTest.Accident import AccidentCrawler
 from Classes.CrawlingTest.Kakao import KakaoCrawler
+from Classes.CrawlingTest.ChatBot import ChatBoxCrawler
 
 if __name__ == '__main__':
 
@@ -32,7 +33,7 @@ if __name__ == '__main__':
     )
     while True:
         try:
-            main_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:프로그램종료 | 1:영화 | 2:음악 | 3:날씨 | 4:코로나19 | 5:게임 | 6:사건사고 | 7:카카오\n'))
+            main_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:프로그램종료 | 1:영화 | 2:음악 | 3:날씨 | 4:코로나19 | 5:게임 | 6:사건사고 | 7:카카오 | 8:챗봇\n'))
         except Exception as e:
             info_message = '[경고] 숫자만 입력해 주세요.\n'
             print(info_message)
@@ -508,6 +509,61 @@ if __name__ == '__main__':
                     info_message = '[알림] 메뉴 목록을 선택해 주세요.\n'
                     print(info_message)
                     continue
+
+        elif main_menu_number == 8:
+            """ 챗봇 크롤링 """
+            chat_bot_crawler = ChatBoxCrawler(simsimi_api_key=property_reader.get('SIMSIMI_DEMO_APP_KEY').data, simsimi_version=property_reader.get('SIMSIMI_VERSION').data)
+
+            while True:
+                try:
+                    chat_bot_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:메인메뉴 | 1:심심이와 대화\n'))
+                except Exception as e:
+                    info_message = '[경고] 숫자만 입력해 주세요.\n'
+                    print(info_message)
+                    continue
+
+                if chat_bot_menu_number == 0:
+                    """ 메인 메뉴로 이동 """
+                    break
+
+                elif chat_bot_menu_number == 1:
+                    try:
+                        simsimi_selected_language_code = int(input('[알림] 심심이와 대화을 시작합니다. 언어를 선택해 주세요. 1:Korean 2:English\n'))
+                    except Exception as e:
+                        info_message = '[경고] 숫자만 입력해 주세요.\n'
+                        print(info_message)
+                        continue
+                    
+                    if simsimi_selected_language_code == 1:
+                        print('"종료" 입력 시 대화 종료')
+                        while True:
+                            now_time = time.strftime('%Y-%m-%d %H:%M:%S')
+                            chat_message = str(input('보낼 메시지: '))
+                            if chat_message == '종료':
+                                print()
+                                break
+                            print('[{0}] 나: {1}'.format(now_time.split()[1], chat_message))
+                            chat_bot_crawler.chat_with_simsimi(chat_message=chat_message, language_type='ko')
+                    elif simsimi_selected_language_code == 2:
+                        print('Write "exit" to end chatting')
+                        while True:
+                            now_time = time.strftime('%Y-%m-%d %H:%M:%S')
+                            chat_message = str(input('Message to send: '))
+                            if chat_message == 'exit':
+                                print()
+                                break
+                            print('[{0}] me: {1}'.format(now_time.split()[1], chat_message))
+                            chat_bot_crawler.chat_with_simsimi(chat_message=chat_message, language_type='en')
+                    else:
+                        info_message = '[알림] 메뉴 목록을 선택해 주세요.\n'
+                        print(info_message)
+                        continue
+                                            
+                else:
+                    info_message = '[알림] 메뉴 목록을 선택해 주세요.\n'
+                    print(info_message)
+                    continue
+
         else:
             info_message = '[알림] 메뉴 목록을 선택해 주세요.\n'
             print(info_message)
