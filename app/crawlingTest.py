@@ -14,8 +14,8 @@ from Classes.CrawlingTest.Accident import AccidentCrawler
 from Classes.CrawlingTest.Kakao import KakaoCrawler
 from Classes.CrawlingTest.ChatBot import ChatBoxCrawler
 
+""" ◀ 여러 api를 사용하는 데이터 크롤러 모듈 ▶ """
 if __name__ == '__main__':
-
     property_reader = jproperties.Properties()
     info_message = None
     try:

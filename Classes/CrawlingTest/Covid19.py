@@ -52,21 +52,22 @@ class Covid19Crawler:
 
     def search_national_issue_by_nation_name(self, nation_name):
         """ 국가명으로 코로나 이슈 검색 """
-        # url
-        url = 'http://apis.data.go.kr/1262000/CountryCovid19SafetyServiceNew/getCountrySafetyNewsListNew?serviceKey={0}&numOfRows=100&pageNo=1&cond[country_nm::EQ]={1}'.format(
-            self.data_gov_key, nation_name)
+        host = 'http://apis.data.go.kr'
+        path = '/1262000/CountryCovid19SafetyServiceNew/getCountrySafetyNewsListNew'
+        headers = None
+        query = '?serviceKey={0}&numOfRows=100&pageNo=1&cond[country_nm::EQ]={1}'.format(self.data_gov_key, nation_name)
+        method = 'GET'
+        data = None
 
+        # 응답
         try:
-            # 요청보내고 응답 저장
-            res = requests.get(url)
-            # 응답의 텍스트
-            res_text = res.text
-            # 응답의 텍스트를 json형태로 파싱
-            parsed_object = json.loads(res_text)
-            # 위 두줄과 아래 한줄은 동일
-            # parsed_object = res.json()
+            res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query,
+                                                               method=method, data=data)
         except Exception as e:
-            raise RuntimeError('공공데이터포털로부터 정보를 가져오는 데에 실패했습니다.')
+            raise RuntimeError("[공공데이터포털] 지난 날씨정보 요청 실패: " + str(e))
+
+        # 응답의 바디를 json형태로 파싱
+        parsed_object = json.loads(res.text)
 
         issue_count = parsed_object['currentCount']
         list_data = parsed_object['data']
