@@ -25,7 +25,7 @@ class Covid19Crawler:
         try:
             res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query, method=method, data=data)
         except Exception as e:
-            raise RuntimeError("[공공데이터포털] 지난 날씨정보 요청 실패: " + str(e))
+            raise RuntimeError("[공공데이터포털] 코로나19 센터 정보 요청 실패: " + str(e))
 
         # 응답의 바디를 json형태로 파싱
         parsed_object = json.loads(res.text)
@@ -64,7 +64,7 @@ class Covid19Crawler:
             res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query,
                                                                method=method, data=data)
         except Exception as e:
-            raise RuntimeError("[공공데이터포털] 지난 날씨정보 요청 실패: " + str(e))
+            raise RuntimeError("[공공데이터포털] 코로나19 국가별 이슈 요청 실패: " + str(e))
 
         # 응답의 바디를 json형태로 파싱
         parsed_object = json.loads(res.text)

@@ -19,7 +19,8 @@ if __name__ == '__main__':
     property_reader = jproperties.Properties()
     info_message = None
     try:
-        with open('../resources/auth.properties', 'rb') as auth_properties:
+        # with open('../resources/auth.properties', 'rb') as auth_properties:
+        with open('C:\\Users\\user\\Desktop\\inwoo\\PCWorkspace01\\python_test\\resources\\auth.properties', 'rb') as auth_properties:
             property_reader.load(auth_properties)
     except Exception as e:
         info_message = '[에러] cannot open .properties file'

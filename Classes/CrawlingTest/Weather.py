@@ -41,7 +41,7 @@ class WeatherCrawler:
             ex_weather_temperature = component['ta']
             ex_weather_humidity = component['hm']
             ex_weather_wind_speed = component['ws']
-            ex_weather_rainfall = '0' if not component['rn'] else component['rn']
+            ex_weather_rainfall = '0.0' if not component['rn'] else component['rn']
 
             print('{0:8}{1:20}{2:24}{3:14}{4:14}{5:13}{6}'.format(ex_weather_index, ex_weather_date,
                                                                   ex_weather_station_name, ex_weather_temperature,
