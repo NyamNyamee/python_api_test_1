@@ -6,7 +6,7 @@ from urllib import parse
 from Classes.Util.TransmitterReceiver import TransmitterReceiver
 
 
-class ChatBoxCrawler:
+class ChatBotCrawler:
     """ 챗봇 크롤러  """
 
     def __init__(self, simsimi_api_key, simsimi_version):

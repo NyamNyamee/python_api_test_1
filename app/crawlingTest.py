@@ -12,7 +12,8 @@ from Classes.CrawlingTest.Covid19 import Covid19Crawler
 from Classes.CrawlingTest.Game import GameCrawler
 from Classes.CrawlingTest.Accident import AccidentCrawler
 from Classes.CrawlingTest.Kakao import KakaoCrawler
-from Classes.CrawlingTest.ChatBot import ChatBoxCrawler
+from Classes.CrawlingTest.ChatBot import ChatBotCrawler
+from Classes.CrawlingTest.Gyeonggi_Info import GyeonggiInfoCrawler
 
 """ ◀ 여러 api를 사용하는 데이터 크롤러 모듈 ▶ """
 if __name__ == '__main__':
@@ -27,14 +28,14 @@ if __name__ == '__main__':
         logger.exception(f'{info_message}: {str(e)}')
         print(info_message)
 
-        # Sentry Config
+    # Sentry Config
     sentry.init(
-        dsn=property_reader.get('SENTRY_DSN').data
+        # dsn=property_reader.get('SENTRY_DSN').data
         # ,debug=True
     )
     while True:
         try:
-            main_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:프로그램종료 | 1:영화 | 2:음악 | 3:날씨 | 4:코로나19 | 5:게임 | 6:사건사고 | 7:카카오 | 8:챗봇\n'))
+            main_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:프로그램종료 | 1:영화 | 2:음악 | 3:날씨 | 4:코로나19 | 5:게임 | 6:사건사고 | 7:카카오 | 8:챗봇 | 9:경기도정보\n'))
         except Exception as e:
             info_message = '[경고] 숫자만 입력해 주세요.\n'
             print(info_message)
@@ -299,7 +300,7 @@ if __name__ == '__main__':
 
                     while True:
                         try:
-                            blizzard_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:메인메뉴 | 1:디아블로3 | 2:스타크래프트2 | 3:하스스톤 | 4:WOW | 5.WOW Classic\n'))
+                            blizzard_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:상위메뉴 | 1:디아블로3 | 2:스타크래프트2 | 3:하스스톤 | 4:WOW | 5.WOW Classic\n'))
                         except Exception as e:
                             info_message = '[경고] 숫자만 입력해 주세요.\n'
                             print(info_message)
@@ -484,8 +485,8 @@ if __name__ == '__main__':
                 elif kakao_menu_number == 5:
                     """ 카카오 번역 """
                     try:
-                        kakao_selected_language_to_translate_num = int(input('[알림] 번역할 언어의 번호를 선택해 주세요:\n1.한국어 2.영어 3.일본어 4.중국어 5.베트남어 6.인도네시아어 7.아랍어 8.뱅갈어 9.독일어 10.스페인어 11.프랑스어 12.힌디어 13.이탈리아어 14.말레이시아어 15.네덜란드어 16.포르투갈어 17.러시아어 18.태국어 19.터키어\n'))
-                        kakao_selected_language_to_translated_num = int(input('[알림] 번역될 언어의 번호를 선택해 주세요:\n1.한국어 2.영어 3.일본어 4.중국어 5.베트남어 6.인도네시아어 7.아랍어 8.뱅갈어 9.독일어 10.스페인어 11.프랑스어 12.힌디어 13.이탈리아어 14.말레이시아어 15.네덜란드어 16.포르투갈어 17.러시아어 18.태국어 19.터키어\n'))
+                        kakao_selected_language_to_translate_num = int(input('[알림] 입력할 언어의 번호를 선택해 주세요:\n1.한국어 2.영어 3.일본어 4.중국어 5.베트남어 6.인도네시아어 7.아랍어 8.뱅갈어 9.독일어 10.스페인어 11.프랑스어 12.힌디어 13.이탈리아어 14.말레이시아어 15.네덜란드어 16.포르투갈어 17.러시아어 18.태국어 19.터키어\n'))
+                        kakao_selected_language_to_translated_num = int(input('[알림] 출력할 언어의 번호를 선택해 주세요:\n1.한국어 2.영어 3.일본어 4.중국어 5.베트남어 6.인도네시아어 7.아랍어 8.뱅갈어 9.독일어 10.스페인어 11.프랑스어 12.힌디어 13.이탈리아어 14.말레이시아어 15.네덜란드어 16.포르투갈어 17.러시아어 18.태국어 19.터키어\n'))
 
                         if kakao_selected_language_to_translate_num < 1 or kakao_selected_language_to_translate_num > 19 or kakao_selected_language_to_translated_num < 1 or kakao_selected_language_to_translated_num > 19:
                             info_message = '[알림] 목록에 존재하는 번호를 선택해 주세요.\n'
@@ -513,7 +514,7 @@ if __name__ == '__main__':
 
         elif main_menu_number == 8:
             """ 챗봇 크롤링 """
-            chat_bot_crawler = ChatBoxCrawler(simsimi_api_key=property_reader.get('SIMSIMI_DEMO_APP_KEY').data, simsimi_version=property_reader.get('SIMSIMI_VERSION').data)
+            chat_bot_crawler = ChatBotCrawler(simsimi_api_key=property_reader.get('SIMSIMI_DEMO_APP_KEY').data, simsimi_version=property_reader.get('SIMSIMI_VERSION').data)
 
             while True:
                 try:
@@ -564,7 +565,101 @@ if __name__ == '__main__':
                     info_message = '[알림] 메뉴 목록을 선택해 주세요.\n'
                     print(info_message)
                     continue
+        elif main_menu_number == 9:
+            """ 경기도 정보 크롤링 """
+            gyeonggi_info_crawler = GyeonggiInfoCrawler(data_gg_gov_key=property_reader.get('DATA_GG_GOV_KEY').data)
+            # 경기도 주소 정보 딕셔너리
+            gyeonggi_address_dict = {
+                'sigun': ['가평군', '고양시', '과천시', '광명시', '광주시', '구리시', '군포시', '김포시', '남양주시', '동두천시', '부천시', '성남시', '수원시',
+                          '시흥시', '안산시', '안성시', '안양시', '양주시', '양평군', '여주시', '연천군', '오산시', '용인시', '의왕시', '의정부시', '이천시',
+                          '파주시', '평택시', '포천시', '하남시', '화성시']}
 
+            while True:
+                try:
+                    gyeonggi_info_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:메인메뉴 | 1:CCTV 현황 | 2:지역화폐 정보 | 3:무료와이파이 정보 | 4:공중화장실 현황 | 5:전기차충전소 현황 |\n'))
+                except Exception as e:
+                    info_message = '[경고] 숫자만 입력해 주세요.\n'
+                    print(info_message)
+                    continue
+
+                if gyeonggi_info_menu_number == 0:
+                    """ 메인 메뉴로 이동 """
+                    break
+
+                elif gyeonggi_info_menu_number == 1:
+                    """ CCTV 현황 조회 """
+                    try:
+                        gyeonggi_search_sigun_name = str(input('[알림] 시군명을 입력해주세요 ex)성남시: '))
+                        if gyeonggi_search_sigun_name not in gyeonggi_address_dict['sigun']:
+                            info_message = '[알림] 정확한 시군명을 입력해 주세요.\n'
+                            print(info_message)
+                            continue
+                        gyeonggi_info_crawler.get_cctv_installation_info(gyeonggi_search_sigun_name=gyeonggi_search_sigun_name)
+                    except Exception as e:
+                        sentry.capture_exception(e)
+                        logger.exception(f'[에러] 경기데이터드림 CCTV 설치 현황 조회: {str(e)}')
+                        print()
+                        continue
+                        
+                elif gyeonggi_info_menu_number == 2:
+                    """ 지역화폐 가맹점 조회 """
+                    try:
+                        gyeonggi_search_sigun_name = str(input('[알림] 시군명을 입력해주세요 ex)성남시: '))
+                        if gyeonggi_search_sigun_name not in gyeonggi_address_dict['sigun']:
+                            info_message = '[알림] 정확한 시군명을 입력해 주세요.\n'
+                            print(info_message)
+                            continue
+                        gyeonggi_info_crawler.get_local_store_info(gyeonggi_search_sigun_name=gyeonggi_search_sigun_name)
+                    except Exception as e:
+                        sentry.capture_exception(e)
+                        logger.exception(f'[에러] 경기데이터드림 지역화폐 가맹점 현황 조회: {str(e)}')
+                        print()
+                        continue
+                        
+                elif gyeonggi_info_menu_number == 3:
+                    """ 무료 와이파이 사용가능 장소 조회 """
+                    try:
+                        gyeonggi_search_sigun_name = str(input('[알림] 시군명을 입력해주세요 ex)성남시: '))
+                        if gyeonggi_search_sigun_name not in gyeonggi_address_dict['sigun']:
+                            info_message = '[알림] 정확한 시군명을 입력해 주세요.\n'
+                            print(info_message)
+                            continue
+                        gyeonggi_info_crawler.get_free_wifi_info(gyeonggi_search_sigun_name=gyeonggi_search_sigun_name)
+                    except Exception as e:
+                        sentry.capture_exception(e)
+                        logger.exception(f'[에러] 경기데이터드림 무료 와이파이 사용가능 장소 조회: {str(e)}')
+                        print()
+                        continue
+
+                elif gyeonggi_info_menu_number == 4:
+                    """ 공중화장실 현황 조회 """
+                    try:
+                        gyeonggi_search_sigun_name = str(input('[알림] 시군명을 입력해주세요 ex)성남시: '))
+                        if gyeonggi_search_sigun_name not in gyeonggi_address_dict['sigun']:
+                            info_message = '[알림] 정확한 시군명을 입력해 주세요.\n'
+                            print(info_message)
+                            continue
+                        gyeonggi_info_crawler.get_public_toilet_info(gyeonggi_search_sigun_name=gyeonggi_search_sigun_name)
+                    except Exception as e:
+                        sentry.capture_exception(e)
+                        logger.exception(f'[에러] 경기데이터드림 공중화장실 현황 조회: {str(e)}')
+                        print()
+                        continue
+                        
+                elif gyeonggi_info_menu_number == 5:
+                    """ 전기차 충전소 현황 조회 """
+                    try:
+                        gyeonggi_search_sigun_name = str(input('[알림] 시군명을 입력해주세요 ex)성남시: '))
+                        if gyeonggi_search_sigun_name not in gyeonggi_address_dict['sigun']:
+                            info_message = '[알림] 정확한 시군명을 입력해 주세요.\n'
+                            print(info_message)
+                            continue
+                        gyeonggi_info_crawler.get_electric_gas_station_info(gyeonggi_search_sigun_name=gyeonggi_search_sigun_name)
+                    except Exception as e:
+                        sentry.capture_exception(e)
+                        logger.exception(f'[에러] 경기데이터드림 전기차 충전소 현황 조회: {str(e)}')
+                        print()
+                        continue
         else:
             info_message = '[알림] 메뉴 목록을 선택해 주세요.\n'
             print(info_message)

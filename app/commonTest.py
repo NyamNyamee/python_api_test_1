@@ -2,6 +2,7 @@ import requests
 import json
 import jproperties
 from urllib import parse
+import time
 
 """ .properties 파일 읽기 테스트 """
 # property_reader = jproperties.Properties()
@@ -59,6 +60,38 @@ from urllib import parse
 # print(answer_message)
 
 """ urllib parse encoding test """
-text = '안녕'
-result = parse.quote(text)
-print(result)
+# text = '안녕'
+# result = parse.quote(text)
+# print(result)
+
+
+""" 숫자 자르기 테스트 """
+# total_count = 9
+# print(total_count//1000)
+
+
+""" try catch finally test """
+
+
+def think():
+    print('think')
+    time.sleep(3)
+
+
+def rest():
+    print('rest')
+
+
+def live():
+    print('live')
+
+
+def die():
+    print('die')
+
+
+brain = False
+# if brain is True:
+#     think()
+
+think() if brain else die()
