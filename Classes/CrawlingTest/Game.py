@@ -35,7 +35,7 @@ class GameCrawler:
             res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query,
                                                                method=method, data=data)
         except Exception as e:
-            raise RuntimeError("[공공데이터포털] 지난 날씨정보 요청 실패: " + str(e))
+            raise RuntimeError("[Steam] 게임정보 요청 실패: " + str(e))
 
         # 응답의 바디를 json형태로 파싱
         parsed_object = json.loads(res.text)
