@@ -25,7 +25,7 @@ class AccidentCrawler:
         try:
             res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query, method=method, data=data)
         except Exception as e:
-            raise RuntimeError("[공공데이터포털] 지난 날씨정보 요청 실패: " + str(e))
+            raise RuntimeError("[공공데이터포털] 교통사고정보 요청 실패: " + str(e))
 
         # 응답의 바디를 json형태로 파싱
         parsed_object = json.loads(res.text)
@@ -51,7 +51,7 @@ class AccidentCrawler:
             accident_assailant_violation_law_code = component['aslt_vtr_cd']  # 법규위반
             accident_road_type_code = component['road_frm_cd']  # 도로형태
             accident_assailant_vehicle_code = component['wrngdo_isrty_vhcty_lclas_cd']  # 가해차종코드
-            accident_victim_vehicle_code = component['wrngdo_isrty_vhcty_lclas_cd']  # 피해차종코드
+            accident_victim_vehicle_code = component['dmge_isrty_vhcty_lclas_cd']  # 피해차종코드
             print('{0:13}{1:14}{2:15}{3:15}{4:16}{5:20}{6:18}{7:14}{8:16}{9:14}{10:12}{11}'.format(
                 accident_occurrence_date,
                 self.transfer_search_code_to_string(response_column=1, response_value=accident_day_night_code),
