@@ -68,6 +68,35 @@ class KakaoCrawler:
         except Exception as e:
             raise RuntimeError("[카카오] 토큰 요청 실패: " + str(e))
 
+    def get_kakao_token_info(self):
+        """ 토큰 정보 요청 """
+        host = 'https://kapi.kakao.com'
+        path = '/v1/user/access_token_info'
+        headers = {'Authorization': 'Bearer ' + self.kakao_access_token}
+        query = ''
+        method = 'GET'
+        data = None
+
+        # 응답
+        try:
+            res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query, method=method, data=data)
+
+            # json형태의 문자열 바디를 딕셔너리로 파싱
+            parsed_object = json.loads(res.text)
+
+            kakao_inwoo_app_user_id = parsed_object['id']
+            kakao_inwoo_connected_time = parsed_object['expires_in']
+            kakao_inwoo_app_id = parsed_object['app_id']
+
+            print('회원번호: {0}\n만료시간: {1}\nApp ID: {2}'.format(kakao_inwoo_app_user_id,
+                                                             str(round(
+                                                                 int(kakao_inwoo_connected_time) / 60)) + "분 " +
+                                                             str(int(kakao_inwoo_connected_time) % 60) + "초",
+                                                             kakao_inwoo_app_id))
+
+            print()
+        except Exception as e:
+            raise RuntimeError("[카카오] 사용자 토큰 정보 요청 실패: " + str(e))
 
     def refresh_kakao_access_token(self):
         """ 토큰 갱신 """
@@ -177,7 +206,8 @@ class KakaoCrawler:
             kakao_inwoo_app_account_profile_gender = kakao_inwoo_app_account_info['gender']
 
             print('회원번호: {0}\n연결된 시점: {1}\n닉네임: {2}\n프로필 이미지 링크: {3}\n이메일: {4}\n연령대: {5}\n생일: {6}\n성별: {7}'.format(
-                kakao_inwoo_app_user_id, kakao_inwoo_connected_time,
+                kakao_inwoo_app_user_id,
+                kakao_inwoo_connected_time,
                 kakao_inwoo_app_account_profile_nickname,
                 kakao_inwoo_app_account_profile_image_url,
                 kakao_inwoo_app_account_profile_email,
@@ -189,36 +219,6 @@ class KakaoCrawler:
         except Exception as e:
             kakao_inwoo_app_error_message = parsed_object['msg']
             raise RuntimeError("[카카오] 사용자 정보 요청 실패: " + str(kakao_inwoo_app_error_message))
-
-    def get_kakao_token_info(self):
-        """ 토큰 정보 요청 """
-        host = 'https://kapi.kakao.com'
-        path = '/v1/user/access_token_info'
-        headers = {'Authorization': 'Bearer ' + self.kakao_access_token}
-        query = ''
-        method = 'GET'
-        data = None
-
-        # 응답
-        try:
-            res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query, method=method, data=data)
-
-            # json형태의 문자열 바디를 딕셔너리로 파싱
-            parsed_object = json.loads(res.text)
-
-            kakao_inwoo_app_user_id = parsed_object['id']
-            kakao_inwoo_connected_time = parsed_object['expires_in']
-            kakao_inwoo_app_id = parsed_object['app_id']
-
-            print('회원번호: {0}\n만료시간(초): {1}\nApp ID: {2}'.format(kakao_inwoo_app_user_id,
-                                                                str(round(
-                                                                    int(kakao_inwoo_connected_time) / 60)) + "분 " +
-                                                                str(int(kakao_inwoo_connected_time) % 60) + "초",
-                                                                kakao_inwoo_app_id))
-
-            print()
-        except Exception as e:
-            raise RuntimeError("[카카오] 사용자 토큰 정보 요청 실패: " + str(e))
 
     def kakao_send_message_myself(self, text_message):
         """ 나에게 문자 보내기 """
@@ -254,7 +254,7 @@ class KakaoCrawler:
                 "comment_count": 36,
                 "view_count": 260,
             },
-            "button_title": "Visit NyamNyamee"
+            "button_title": "Visit NyamNyamee.Github"
         }
         # dict타입을 json형태의 문자열로 인코딩
         data = {"template_object": json.dumps(message_feed_object)}
@@ -275,8 +275,8 @@ class KakaoCrawler:
             raise RuntimeError("[카카오] 나에게 문자 보내기 요청 실패: " + str(e))
 
     def kakao_translate(self, language_num_to_translate, language_num_to_translated, text_to_translate):
-        """ 토큰 정보 요청 """
-        language_num_to_translate = self.transfer_language_num_to_code(language_num_to_translate)
+        """ 언어 번역 """
+        language_num_to_translate = self. transfer_language_num_to_code(language_num_to_translate)
         language_num_to_translated = self.transfer_language_num_to_code(language_num_to_translated)
 
         host = 'https://dapi.kakao.com'
