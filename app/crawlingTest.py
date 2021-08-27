@@ -21,7 +21,7 @@ if __name__ == '__main__':
     info_message = None
     try:
         # with open('../resources/auth.properties', 'rb') as auth_properties:
-        with open('C:\\Users\\user\\Desktop\\inwoo\\PCWorkspace01\\python_test\\resources\\auth.properties', 'rb') as auth_properties:
+        with open('/resources/auth/auth.properties', 'rb') as auth_properties:
             property_reader.load(auth_properties)
     except Exception as e:
         info_message = '[에러] cannot open .properties file'
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     )
     while True:
         try:
-            main_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:프로그램종료 | 1:영화 | 2:음악 | 3:날씨 | 4:코로나19 | 5:게임 | 6:사건사고 | 7:카카오 | 8:챗봇 | 9:경기도정보\n'))
+            main_menu_number = int(input('[알림] 원하는 메뉴를 입력해 주세요.\n0:프로그램종료 | 1:영화 | 2:음악 | 3:날씨 | 4:코로나19 | 5:게임 | 6:사고 | 7:카카오 | 8:챗봇 | 9:경기도정보\n'))
         except Exception as e:
             info_message = '[경고] 숫자만 입력해 주세요.\n'
             print(info_message)
@@ -282,7 +282,7 @@ if __name__ == '__main__':
                                 sentry.capture_exception(e)
                                 logger.exception(f'[에러] 스팀게임 조회: {str(e)}')
                                 print()
-                                
+
                         else:
                             info_message = '[알림] 메뉴 목록을 선택해 주세요.\n'
                             print(info_message)
@@ -470,7 +470,7 @@ if __name__ == '__main__':
                         logger.exception(f'[에러] 카카오 사용자 목록 조회: {str(e)}')
                         print()
                         continue
-                        
+
                 elif kakao_menu_number == 4:
                     """ 나에게 문자보내기 """
                     kakao_text_message = str(input('[알림] 전송할 문자를 입력하세요: '))
@@ -535,7 +535,7 @@ if __name__ == '__main__':
                         info_message = '[경고] 숫자만 입력해 주세요.\n'
                         print(info_message)
                         continue
-                    
+
                     if simsimi_selected_language_code == 1:
                         print('"종료" 입력 시 대화 종료')
                         while True:
@@ -560,7 +560,7 @@ if __name__ == '__main__':
                         info_message = '[알림] 메뉴 목록을 선택해 주세요.\n'
                         print(info_message)
                         continue
-                                            
+
                 else:
                     info_message = '[알림] 메뉴 목록을 선택해 주세요.\n'
                     print(info_message)
@@ -600,7 +600,7 @@ if __name__ == '__main__':
                         logger.exception(f'[에러] 경기데이터드림 CCTV 설치 현황 조회: {str(e)}')
                         print()
                         continue
-                        
+
                 elif gyeonggi_info_menu_number == 2:
                     """ 지역화폐 가맹점 조회 """
                     try:
@@ -615,7 +615,7 @@ if __name__ == '__main__':
                         logger.exception(f'[에러] 경기데이터드림 지역화폐 가맹점 현황 조회: {str(e)}')
                         print()
                         continue
-                        
+
                 elif gyeonggi_info_menu_number == 3:
                     """ 무료 와이파이 사용가능 장소 조회 """
                     try:
@@ -645,7 +645,7 @@ if __name__ == '__main__':
                         logger.exception(f'[에러] 경기데이터드림 공중화장실 현황 조회: {str(e)}')
                         print()
                         continue
-                        
+
                 elif gyeonggi_info_menu_number == 5:
                     """ 전기차 충전소 현황 조회 """
                     try:
