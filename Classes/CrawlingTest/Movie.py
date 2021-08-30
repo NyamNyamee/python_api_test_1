@@ -134,7 +134,7 @@ class MovieCrawler:
         try:
             res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query, method=method, data=data)
         except Exception as e:
-            raise RuntimeError("[영화진흥위원회] 영화 목록 정보 요청 실패: " + str(e))
+            raise RuntimeError("[영화진흥위원회] 영화 상세정보 요청 실패: " + str(e))
 
         # 응답의 바디를 json형태로 파싱
         parsed_object = json.loads(res.text)

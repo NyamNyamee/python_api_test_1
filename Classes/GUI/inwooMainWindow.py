@@ -48,7 +48,7 @@ class InwooMainWindow(QMainWindow):
             # 윈도우 기본설정
             self.setWindowTitle('Inwoo\'s application')  # 윈도우 타이틀
             self.setWindowIcon(self.icon_api_01)  # 윈도우 아이콘 지정
-            self.resize(1800, 800)  # 윈도우 너비, 높이 조절(픽셀)
+            self.resize(1800, 900)  # 윈도우 너비, 높이 조절(픽셀)
             self.set_window_center()  # 윈도우를 화면 가운데로
 
             # 메뉴바
@@ -58,10 +58,10 @@ class InwooMainWindow(QMainWindow):
             self.set_window_tool_bar()
 
             # 하단 상태표시줄
-            current_time = time.strftime('%Y-%m-%d %H:%M:%S')  # 현재시간을 문자열로 저장
+            current_time = time.strftime('[%Y-%m-%d %H:%M:%S]')  # 현재시간을 문자열로 저장
             bottom_status_bar = self.statusBar()  # 상태표시줄 생성
             # bottom_status_bar.showMessage('오늘 날짜: ' + current_time)  # 메시지 설정
-            self.setStatusTip('Now: ' + current_time)  # 윈도우에 마우스오버하면 하단 상태표시줄 메시지 표시
+            self.setStatusTip('Program started at ' + current_time)  # 윈도우에 마우스오버하면 하단 상태표시줄 메시지 표시
 
             # 메인위젯 지정
             self.inwoo_main_widget = InwooMainWidget()
