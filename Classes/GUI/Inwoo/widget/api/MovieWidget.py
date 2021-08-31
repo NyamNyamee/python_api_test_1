@@ -3,6 +3,7 @@ import time
 import datetime
 import json
 import jproperties
+import urllib.request
 
 from PyQt5 import *
 from PyQt5.QtWidgets import *
@@ -15,8 +16,8 @@ from Classes.Util.UnicodeUtil import UnicodeUtil
 from Classes.Util.TransmitterReceiver import TransmitterReceiver
 
 
-class InwooMainWidget(QWidget):
-    """ inwoo app main widget """
+class MovieWidget(QWidget):
+    """ inwoo app movie widget """
 
     def __init__(self):
         super().__init__()
@@ -47,11 +48,8 @@ class InwooMainWidget(QWidget):
             self.font_content = QFont()  # 내용물 폰트 객체 생성
             self.font_content.setPointSize(8)  # 글자 포인트
 
-            # 수직 레이아웃 생성
-            self.v_layout_01 = QVBoxLayout()
-
-            # 현재 위젯의 레이아웃 지정
-            self.setLayout(self.v_layout_01)
+            # 영화 수직 레이아웃 생성
+            self.v_layout_movie = QVBoxLayout()
         except Exception as e:
             print('{init_ui} - ' + str(e))
 
@@ -75,7 +73,7 @@ class InwooMainWidget(QWidget):
             print('{get_progress_bar} - ' + str(e))
 
     def date_picker_handler(self):
-        """ 대출일 날짜 변경 시 이벤트 핸들러 """
+        """ 날짜 변경 시 이벤트 핸들러 """
         try:
             # 각 날짜 값 저장
             selected_date_picker_01 = self.date_picker_01.date()
@@ -89,12 +87,15 @@ class InwooMainWidget(QWidget):
     def set_tabs_movie(self):
         """ 영화 탭 메뉴 생성 """
         try:
-            # 레이아웃의 위젯 개수가 0보다 크다면(최초 실행이 아니라면)
-            if self.layout().count() > 0:
+            # 메인 위젯의 레이아웃을 영화 수직 레이아웃으로 지정
+            self.setLayout(self.v_layout_movie)
+            # movie_tabs 라는 이름을 가진 QTabWidget이 있다면
+            if self.findChild(QTabWidget, 'movie_tabs'):
                 self.layout().removeWidget(self.tabs_api_movie)  # 탭 제거
 
             # 탭 생성
             self.tabs_api_movie = QTabWidget()
+            self.tabs_api_movie.setObjectName('movie_tabs')
 
             # 박스오피스
             self.set_form_api_movie_box_office()
@@ -103,8 +104,8 @@ class InwooMainWidget(QWidget):
             # 영화인
             self.set_form_api_movie_person()
 
-            # 수직 레이아웃에 위젯 추가
-            self.v_layout_01.addWidget(self.tabs_api_movie)
+            # 영화 수직 레이아웃에 위젯 추가
+            self.v_layout_movie.addWidget(self.tabs_api_movie)
         except Exception as e:
             print('{set_tabs_movie} - ' + str(e))
 
@@ -545,6 +546,7 @@ class InwooMainWidget(QWidget):
             self.table_api_movie_person.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)  # 테이블 너비를 윈도우 너비에 맞춤, 데이터 값에 따라 컬럼 크기 자동 조절
             self.table_api_movie_person.horizontalHeader().setVisible(False)  # 수평 헤더 숨김
             self.table_api_movie_person.verticalHeader().setVisible(False)  # 수직 헤더 숨김
+            # 컬럼 당 비율 지정
             # self.table_api_movie_person.setColumnWidth(0, self.width() * 1 / 10)
             # self.table_api_movie_person.setColumnWidth(1, self.width() * 2 / 10)
             # self.table_api_movie_person.setColumnWidth(2, self.width() * 2 / 10)

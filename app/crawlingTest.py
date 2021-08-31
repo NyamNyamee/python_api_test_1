@@ -21,7 +21,7 @@ if __name__ == '__main__':
     info_message = None
     try:
         # with open('../resources/auth.properties', 'rb') as auth_properties:
-        with open('/resources/auth/auth.properties', 'rb') as auth_properties:
+        with open('..//resources/auth/auth.properties', 'rb') as auth_properties:
             property_reader.load(auth_properties)
     except Exception as e:
         info_message = '[에러] cannot open .properties file'

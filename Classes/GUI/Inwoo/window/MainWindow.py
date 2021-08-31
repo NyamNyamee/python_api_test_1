@@ -1,28 +1,16 @@
-import sys
 import time
-import datetime
 
-from PyQt5 import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
-from Classes.Util.Logger import logger
-
-from Classes.GUI.inwooMainWidget import InwooMainWidget
-
-from Classes.CrawlingTest.Movie import MovieCrawler
-from Classes.CrawlingTest.Music import MusicCrawler
-from Classes.CrawlingTest.Weather import WeatherCrawler
-from Classes.CrawlingTest.Covid19 import Covid19Crawler
-from Classes.CrawlingTest.Game import GameCrawler
-from Classes.CrawlingTest.Accident import AccidentCrawler
-from Classes.CrawlingTest.Kakao import KakaoCrawler
-from Classes.CrawlingTest.ChatBot import ChatBotCrawler
-from Classes.CrawlingTest.Gyeonggi_Info import GyeonggiInfoCrawler
+from Classes.GUI.Inwoo.widget.api.MovieWidget import MovieWidget
+from Classes.GUI.Inwoo.widget.api.MusicWidget import MusicWidget
+from Classes.GUI.Inwoo.widget.api.WeatherWidget import WeatherWidget
+from Classes.GUI.Inwoo.widget.api.Covid19Widget import Covid19Widget
 
 
-class InwooMainWindow(QMainWindow):
+class MainWindow(QMainWindow):
     """ Inwoo App Main Window """
 
     def __init__(self):
@@ -64,8 +52,8 @@ class InwooMainWindow(QMainWindow):
             self.setStatusTip('Program started at ' + current_time)  # 윈도우에 마우스오버하면 하단 상태표시줄 메시지 표시
 
             # 메인위젯 지정
-            self.inwoo_main_widget = InwooMainWidget()
-            self.setCentralWidget(self.inwoo_main_widget)
+            # self.inwoo_main_widget = InwooMainWidget()
+            # self.setCentralWidget(self.inwoo_main_widget)
 
             # 화면 띄우기
             self.show()  # 화면에 띄움
@@ -126,57 +114,57 @@ class InwooMainWindow(QMainWindow):
             
             # 영화 액션
             action_set_public_api_movie = QAction(self.icon_movie_01, 'Movie', self)  # 영화 액션(아이콘, 텍스트, 붙일 윈도우)
-            action_set_public_api_movie.setToolTip('Movie')
-            action_set_public_api_movie.setStatusTip('Movie')  # 하단 상태표시줄 문구 설정
+            action_set_public_api_movie.setToolTip('Movie')  # 툴팁 지정
+            action_set_public_api_movie.setStatusTip('Movie')  # 하단 상태표시줄 문구 지정
             action_set_public_api_movie.triggered.connect(self.set_window_widget_api_movie)  # 클릭 시 set_window_widget_api_movie() 실행
 
             # 음악 액션
-            action_set_public_api_music = QAction(self.icon_music_01, 'Music', self)  # 음악 액션(아이콘, 텍스트, 붙일 윈도우)
+            action_set_public_api_music = QAction(self.icon_music_01, 'Music', self)
             action_set_public_api_music.setToolTip('Music')
-            action_set_public_api_music.setStatusTip('Music')  # 하단 상태표시줄 문구 설정
-            action_set_public_api_music.triggered.connect(self.set_window_widget_api_music)  # 클릭 시 set_window_widget_api_music() 실행
+            action_set_public_api_music.setStatusTip('Music')
+            action_set_public_api_music.triggered.connect(self.set_window_widget_api_music)
 
             # 날씨 액션
-            action_set_public_api_weather = QAction(self.icon_weather_01, 'Weather', self)  # 날씨 액션(아이콘, 텍스트, 붙일 윈도우)
+            action_set_public_api_weather = QAction(self.icon_weather_01, 'Weather', self)
             action_set_public_api_weather.setToolTip('Weather')
-            action_set_public_api_weather.setStatusTip('Weather')  # 하단 상태표시줄 문구 설정
-            action_set_public_api_weather.triggered.connect(self.set_window_widget_api_music)  # 클릭 시 set_window_widget_api_music() 실행
+            action_set_public_api_weather.setStatusTip('Weather')
+            action_set_public_api_weather.triggered.connect(self.set_window_widget_api_weather)
 
             # 코로나 액션
-            action_set_public_api_covid = QAction(self.icon_covid_01, 'Covid', self)  # 코로나 액션(아이콘, 텍스트, 붙일 윈도우)
-            action_set_public_api_covid.setToolTip('Covid')
-            action_set_public_api_covid.setStatusTip('Covid')  # 하단 상태표시줄 문구 설정
-            action_set_public_api_covid.triggered.connect(self.set_window_widget_api_music)  # 클릭 시 set_window_widget_api_music() 실행
+            action_set_public_api_covid = QAction(self.icon_covid_01, 'Covid19', self)
+            action_set_public_api_covid.setToolTip('Covid19')
+            action_set_public_api_covid.setStatusTip('Covid19')
+            action_set_public_api_covid.triggered.connect(self.set_window_widget_api_covid19)
 
             # 게임 액션
-            action_set_public_api_game = QAction(self.icon_game_01, 'Game', self)  # 게임 액션(아이콘, 텍스트, 붙일 윈도우)
+            action_set_public_api_game = QAction(self.icon_game_01, 'Game', self)
             action_set_public_api_game.setToolTip('Game')
-            action_set_public_api_game.setStatusTip('Game')  # 하단 상태표시줄 문구 설정
-            action_set_public_api_game.triggered.connect(self.set_window_widget_api_music)  # 클릭 시 set_window_widget_api_music() 실행
+            action_set_public_api_game.setStatusTip('Game')
+            action_set_public_api_game.triggered.connect(self.set_window_widget_api_music)
 
             # 사고 액션
-            action_set_public_api_accident = QAction(self.icon_accident_01, 'Accident', self)  # 사고 액션(아이콘, 텍스트, 붙일 윈도우)
+            action_set_public_api_accident = QAction(self.icon_accident_01, 'Accident', self)
             action_set_public_api_accident.setToolTip('Accident')
-            action_set_public_api_accident.setStatusTip('Accident')  # 하단 상태표시줄 문구 설정
-            action_set_public_api_accident.triggered.connect(self.set_window_widget_api_music)  # 클릭 시 set_window_widget_api_music() 실행
+            action_set_public_api_accident.setStatusTip('Accident')
+            action_set_public_api_accident.triggered.connect(self.set_window_widget_api_music)
 
             # 카카오 액션
-            action_set_public_api_kakao = QAction(self.icon_kakao_01, 'Kakao', self)  # 카카오 액션(아이콘, 텍스트, 붙일 윈도우)
+            action_set_public_api_kakao = QAction(self.icon_kakao_01, 'Kakao', self)
             action_set_public_api_kakao.setToolTip('Kakao')
             action_set_public_api_kakao.setStatusTip('Kakao')  # 하단 상태표시줄 문구 설정
-            action_set_public_api_kakao.triggered.connect(self.set_window_widget_api_music)  # 클릭 시 set_window_widget_api_music() 실행
+            action_set_public_api_kakao.triggered.connect(self.set_window_widget_api_music)
 
             # 챗봇 액션
-            action_set_public_api_chatbot = QAction(self.icon_chatbot_01, 'Chatbot', self)  # 챗봇 액션(아이콘, 텍스트, 붙일 윈도우)
+            action_set_public_api_chatbot = QAction(self.icon_chatbot_01, 'Chatbot', self)
             action_set_public_api_chatbot.setToolTip('Chatbot')
             action_set_public_api_chatbot.setStatusTip('Chatbot')  # 하단 상태표시줄 문구 설정
-            action_set_public_api_chatbot.triggered.connect(self.set_window_widget_api_music)  # 클릭 시 set_window_widget_api_music() 실행
+            action_set_public_api_chatbot.triggered.connect(self.set_window_widget_api_music)
 
             # 경기도 액션
-            action_set_public_api_gyeonggi = QAction(self.icon_gyeonggi_01, 'Gyeonggi', self)  # 경기도 액션(아이콘, 텍스트, 붙일 윈도우)
+            action_set_public_api_gyeonggi = QAction(self.icon_gyeonggi_01, 'Gyeonggi', self)
             action_set_public_api_gyeonggi.setToolTip('Gyeonggi')
-            action_set_public_api_gyeonggi.setStatusTip('Gyeonggi')  # 하단 상태표시줄 문구 설정
-            action_set_public_api_gyeonggi.triggered.connect(self.set_window_widget_api_music)  # 클릭 시 set_window_widget_api_music() 실행
+            action_set_public_api_gyeonggi.setStatusTip('Gyeonggi')
+            action_set_public_api_gyeonggi.triggered.connect(self.set_window_widget_api_music)
 
             # api 툴바에 액션 추가
             self.tool_bar_main.addAction(action_set_public_api_movie)
@@ -197,14 +185,38 @@ class InwooMainWindow(QMainWindow):
     def set_window_widget_api_movie(self):
         """ api 툴바 영화 메뉴 선택 핸들러 """
         try:
-            self.inwoo_main_widget.set_tabs_movie()
+            # 위젯 지정
+            self.movie_widget = MovieWidget()
+            self.setCentralWidget(self.movie_widget)
+            self.movie_widget.set_tabs_movie()
         except Exception as e:
             print('{set_window_widget_api_movie} - ' + str(e))
 
     def set_window_widget_api_music(self):
         """ api 툴바 음악 메뉴 선택 핸들러 """
         try:
-            print('music')
+            self.music_widget = MusicWidget()
+            self.setCentralWidget(self.music_widget)
+            self.music_widget.set_tabs_music()
         except Exception as e:
             print('{set_window_widget_api_music} - ' + str(e))
+            
+    def set_window_widget_api_weather(self):
+        """ api 툴바 날씨 메뉴 선택 핸들러 """
+        try:
+            self.weather_widget = WeatherWidget()
+            self.setCentralWidget(self.weather_widget)
+            self.weather_widget.set_tabs_weather()
+        except Exception as e:
+            print('{set_window_widget_api_weather} - ' + str(e))
+
+    def set_window_widget_api_covid19(self):
+        """ api 툴바 코로나19 메뉴 선택 핸들러 """
+        try:
+            self.covid19_widget = Covid19Widget()
+            self.setCentralWidget(self.covid19_widget)
+            self.covid19_widget.set_tabs_covid19()
+        except Exception as e:
+            print('{set_window_widget_api_covid19} - ' + str(e))
+
 
