@@ -8,6 +8,7 @@ from Classes.GUI.Inwoo.widget.api.MovieWidget import MovieWidget
 from Classes.GUI.Inwoo.widget.api.MusicWidget import MusicWidget
 from Classes.GUI.Inwoo.widget.api.WeatherWidget import WeatherWidget
 from Classes.GUI.Inwoo.widget.api.Covid19Widget import Covid19Widget
+from Classes.GUI.Inwoo.widget.api.GameWidget import GameWidget
 
 
 class MainWindow(QMainWindow):
@@ -140,7 +141,7 @@ class MainWindow(QMainWindow):
             action_set_public_api_game = QAction(self.icon_game_01, 'Game', self)
             action_set_public_api_game.setToolTip('Game')
             action_set_public_api_game.setStatusTip('Game')
-            action_set_public_api_game.triggered.connect(self.set_window_widget_api_music)
+            action_set_public_api_game.triggered.connect(self.set_window_widget_api_game)
 
             # 사고 액션
             action_set_public_api_accident = QAction(self.icon_accident_01, 'Accident', self)
@@ -218,5 +219,14 @@ class MainWindow(QMainWindow):
             self.covid19_widget.set_tabs_covid19()
         except Exception as e:
             print('{set_window_widget_api_covid19} - ' + str(e))
+            
+    def set_window_widget_api_game(self):
+        """ api 툴바 게임 메뉴 선택 핸들러 """
+        try:
+            self.game_widget = GameWidget()
+            self.setCentralWidget(self.game_widget)
+            self.game_widget.set_tabs_game()
+        except Exception as e:
+            print('{set_window_widget_api_game} - ' + str(e))
 
 

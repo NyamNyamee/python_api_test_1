@@ -279,7 +279,7 @@ class MovieWidget(QWidget):
             list_column_movie_info = ['번호', '제목', '제작연도', '국내 개봉일', '장르', '국가', '감독']
 
             # 입력된 검색 영화제목명
-            searched_movie_name = str(self.line_edit_api_movie_info.text())
+            searched_movie_name = str(self.line_edit_api_movie_info.text()).strip()
 
             # 요청 정보
             host = 'http://kobis.or.kr'
@@ -304,14 +304,6 @@ class MovieWidget(QWidget):
             # 검색영화 리스트만 가져옴
             list_movie_search = dict_movie_result['movieList']
 
-            # 검색 개수가 0개라면
-            if not list_movie_search:
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Information)
-                msg.setWindowTitle("알림")
-                msg.setText('검색 결과가 없습니다.')
-                msg.exec_()
-
             # 영화상세정보를 검색하기 위해 영화코드를 저장할 리스트
             self.list_movie_code = []
 
@@ -322,6 +314,7 @@ class MovieWidget(QWidget):
             self.table_api_movie_info.horizontalHeader().setVisible(False)  # 수평 헤더 숨김
             self.table_api_movie_info.verticalHeader().setVisible(False)  # 수직 헤더 숨김
             self.table_api_movie_info.setStatusTip('클릭 시 영화 상세정보 노출')  # 하단 상태표시줄
+            self.table_api_movie_info.clicked.connect(self.set_table_api_movie_info_detail)  # 테이블 클릭 이벤트 지정
 
             # 컬럼 지정
             for i, component in enumerate(list_column_movie_info):
@@ -368,10 +361,16 @@ class MovieWidget(QWidget):
                     self.table_api_movie_info.setItem(i + 1, j + 5, item_movie_prod_nation)
                     self.table_api_movie_info.setItem(i + 1, j + 6, item_movie_director)
 
-            self.table_api_movie_info.clicked.connect(self.set_table_api_movie_info_detail)
-
             # 현재 레이아웃에 테이블 위젯 추가
             self.v_layout_api_movie_info.addWidget(self.table_api_movie_info)
+
+            # 검색 결과가 없을 때
+            if not list_movie_search:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Information)
+                msg.setWindowTitle("알림")
+                msg.setText('검색 결과가 없습니다.')
+                msg.exec_()
         except Exception as e:
             print('{set_table_api_movie_info} - ' + str(e))
 
@@ -390,6 +389,7 @@ class MovieWidget(QWidget):
             # 클릭된 영화의 행번호
             clicked_movie_row = self.table_api_movie_info.currentIndex().row()
 
+            # 컬럼 행 클릭 시 리턴
             if not clicked_movie_row:
                 return
 
@@ -506,7 +506,7 @@ class MovieWidget(QWidget):
             list_column_movie_person = ['번호', '이름(국문)', '이름(영문)', '역할', '필모그래피']
 
             # 입력된 검색 영화인 이름
-            searched_movie_person_name = str(self.line_edit_api_movie_person.text())
+            searched_movie_person_name = str(self.line_edit_api_movie_person.text()).strip()
 
             # 요청 정보
             host = 'http://www.kobis.or.kr'
@@ -531,14 +531,6 @@ class MovieWidget(QWidget):
 
             # 영화인 리스트만 가져옴
             list_people_search = dict_people_result['peopleList']
-
-            # 검색 개수가 0개라면
-            if not list_people_search:
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Information)
-                msg.setWindowTitle("알림")
-                msg.setText('검색 결과가 없습니다.')
-                msg.exec_()
 
             # 테이블 생성
             self.table_api_movie_person = QTableWidget(len(list_people_search) + 1, len(list_column_movie_person),self)  # 데이터 행x컬럼 열 크기의 테이블 생성
@@ -588,5 +580,13 @@ class MovieWidget(QWidget):
 
             # 현재 레이아웃에 테이블 위젯 추가
             self.v_layout_api_movie_person.addWidget(self.table_api_movie_person)
+            
+            # 검색 결과가 없을 때
+            if not list_people_search:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Information)
+                msg.setWindowTitle("알림")
+                msg.setText('검색 결과가 없습니다.')
+                msg.exec_()
         except Exception as e:
             print('{set_table_api_movie_person} - ' + str(e))

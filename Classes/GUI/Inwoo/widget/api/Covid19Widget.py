@@ -48,7 +48,7 @@ class Covid19Widget(QWidget):
             self.font_content = QFont()  # 내용물 폰트 객체 생성
             self.font_content.setPointSize(8)  # 글자 포인트
 
-            # 날씨 수직 레이아웃 생성
+            # 코로나 수직 레이아웃 생성
             self.v_layout_covid19 = QVBoxLayout()
         except Exception as e:
             print('{init_ui} - ' + str(e))
@@ -87,7 +87,7 @@ class Covid19Widget(QWidget):
     def set_tabs_covid19(self):
         """ 코로나19 메뉴 탭 생성 """
         try:
-            # 메인 위젯의 레이아웃을 날씨 수직 레이아웃으로 지정
+            # 메인 위젯의 레이아웃을 코로나 수직 레이아웃으로 지정
             self.setLayout(self.v_layout_covid19)
 
             # covid19_tabs 라는 이름의 QTabWidget이 있다면
@@ -96,13 +96,13 @@ class Covid19Widget(QWidget):
 
             # 탭 생성
             self.tabs_api_covid19 = QTabWidget()
-            self.tabs_api_covid19.setObjectName('covid1_tabs')
+            self.tabs_api_covid19.setObjectName('covid19_tabs')
 
             # 국내 센터 정보
             self.set_form_api_covid19_korea_center()
 
             # 국가별 이슈
-            # self.set_form_api_covid19_national_issue()
+            self.set_form_api_covid19_national_issue()
 
             # 코로나19 수직 레이아웃에 코로나19 탭 추가
             self.v_layout_covid19.addWidget(self.tabs_api_covid19)
@@ -186,13 +186,6 @@ class Covid19Widget(QWidget):
                 if searched_location_value in center_name or searched_location_value in center_address or searched_location_value in center_facility_name:
                     result_count += 1
 
-            if not result_count:
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Information)
-                msg.setWindowTitle("알림")
-                msg.setText('검색 결과가 없습니다')
-                msg.exec_()
-
             # 테이블 생성
             self.table_api_covid19_korea_center = QTableWidget(result_count + 1, len(list_column_covid19_korea_center), self)
             self.table_api_covid19_korea_center.setEditTriggers(QAbstractItemView.NoEditTriggers)
@@ -245,5 +238,127 @@ class Covid19Widget(QWidget):
 
             # 레이아웃에 테이블 추가
             self.v_layout_api_covid19_korea_center.addWidget(self.table_api_covid19_korea_center)
+            
+            # 검색결과가 없을 때
+            if not result_count:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Information)
+                msg.setWindowTitle("알림")
+                msg.setText('검색 결과가 없습니다')
+                msg.exec_()
         except Exception as e:
             print('{set_table_api_covid19_korea_center} - ' + str(e))
+
+    def set_form_api_covid19_national_issue(self):
+        """ API covid19 국가별 이슈 테이블 폼 세팅 """
+        try:
+            # 수직 레이아웃 생성
+            self.v_layout_api_covid19_national_issue = QVBoxLayout()
+
+            # 입력란
+            self.line_edit_api_covid19_national_issue = QLineEdit()
+            self.line_edit_api_covid19_national_issue.setPlaceholderText('검색할 국가를 입력해 주세요')
+
+            # 검색 버튼
+            btn_api_covid19_national_issue_run = QPushButton('검색')
+            btn_api_covid19_national_issue_run.resize(btn_api_covid19_national_issue_run.sizeHint())
+            btn_api_covid19_national_issue_run.clicked.connect(self.set_table_api_covid19_national_issue)
+
+            # 수직 레아이웃에 위젯 추가
+            self.v_layout_api_covid19_national_issue.addWidget(self.line_edit_api_covid19_national_issue)
+            self.v_layout_api_covid19_national_issue.addWidget(btn_api_covid19_national_issue_run)
+            self.v_layout_api_covid19_national_issue.addSpacing(700)
+
+            # 그룹박스 생성
+            group_box_api_covid19_national_issue = QGroupBox('국가 입력')
+            # 그룹박스의 레이아웃을 수직 레이아웃으로
+            group_box_api_covid19_national_issue.setLayout(self.v_layout_api_covid19_national_issue)
+
+            # 탭에 그룹박스 추가
+            self.tabs_api_covid19.addTab(group_box_api_covid19_national_issue, '국가별 이슈')
+        except Exception as e:
+            print('{set_form_api_covid19_national_issue} - ' + str(e))
+
+    def set_table_api_covid19_national_issue(self):
+        """ API covid19 국가별 이슈 테이블 데이터 세팅 """
+        try:
+            if self.v_layout_api_covid19_national_issue.count() > 3:
+                self.v_layout_api_covid19_national_issue.removeWidget(self.table_api_covid19_national_issue)
+            else:
+                self.v_layout_api_covid19_national_issue.addSpacing(-700)
+
+            # 테이블 컬럼 리스트
+            list_column_covid19_national_issue = ['작성일', '국가', '타이틀']
+
+            # 국가 입력 값
+            searched_nation_value = str(self.line_edit_api_covid19_national_issue.text().strip())
+
+            # 요청 정보
+            host = 'http://apis.data.go.kr'
+            path = '/1262000/CountryCovid19SafetyServiceNew/getCountrySafetyNewsListNew'
+            headers = None
+            query = '?serviceKey={0}&numOfRows=100&pageNo=1&cond[country_nm::EQ]={1}'.format(self.data_gov_key, searched_nation_value)
+            method = 'GET'
+            data = None
+
+            # 응답
+            try:
+                res = TransmitterReceiver.get_response_for_request(host=host, path=path, headers=headers, query=query, method=method, data=data)
+            except Exception as e:
+                raise RuntimeError("[공공데이터포털] 코로나19 국가별 이슈 요청 실패: " + str(e))
+
+            # 응답의 바디를 json형태로 파싱
+            parsed_object = json.loads(res.text)
+
+            # 필요 데이터만 가져옴
+            issue_count = parsed_object['currentCount']
+            list_covid19_national_issue = parsed_object['data']
+
+            # 테이블 생성
+            self.table_api_covid19_national_issue = QTableWidget(len(list_covid19_national_issue) + 1, len(list_column_covid19_national_issue), self)
+            self.table_api_covid19_national_issue.setEditTriggers(QAbstractItemView.NoEditTriggers)
+            self.table_api_covid19_national_issue.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+            self.table_api_covid19_national_issue.horizontalHeader().setVisible(False)
+            self.table_api_covid19_national_issue.verticalHeader().setVisible(False)
+
+            # 컬럼 세팅
+            for i, component in enumerate(list_column_covid19_national_issue):
+                item_column_covid19_national_issue = QTableWidgetItem(component)
+                item_column_covid19_national_issue.setFont(self.font_header)
+                item_column_covid19_national_issue.setBackground(QColor(200, 200, 200))
+                item_column_covid19_national_issue.setTextAlignment(Qt.AlignCenter)
+                self.table_api_covid19_national_issue.setItem(0, i, item_column_covid19_national_issue)
+
+            # 데이터 세팅
+            for i, component in enumerate(list_covid19_national_issue):
+                issue_written_date = component['wrt_dt']
+                issue_nation_name = component['country_nm']
+                issue_title = component['title']
+                issue_article = component['txt_origin_cn']
+
+                item_issue_written_date = QTableWidgetItem(issue_written_date)
+                item_issue_written_date.setFont(self.font_content)
+                item_issue_nation_name = QTableWidgetItem(issue_nation_name)
+                item_issue_nation_name.setFont(self.font_content)
+                item_issue_title = QTableWidgetItem(issue_title)
+                item_issue_title.setFont(self.font_content)
+                item_issue_title.setToolTip(issue_article)  # 기사 내용을 툴팁으로 지정
+
+                # 컬럼 수만큼 반복
+                for j in range(len(list_column_covid19_national_issue)):
+                    self.table_api_covid19_national_issue.setItem(i + 1, j, item_issue_written_date)
+                    self.table_api_covid19_national_issue.setItem(i + 1, j + 1, item_issue_nation_name)
+                    self.table_api_covid19_national_issue.setItem(i + 1, j + 2, item_issue_title)
+
+            # 레이아웃에 테이블 추가
+            self.v_layout_api_covid19_national_issue.addWidget(self.table_api_covid19_national_issue)
+
+            # 검색결과가 없을 때
+            if not list_covid19_national_issue:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Information)
+                msg.setWindowTitle("알림")
+                msg.setText('검색 결과가 없습니다')
+                msg.exec_()
+        except Exception as e:
+            print('{set_table_api_covid19_national_issue} - ' + str(e))
