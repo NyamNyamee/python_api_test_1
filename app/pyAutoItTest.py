@@ -1,19 +1,18 @@
 import time
 import autoit
 
-# 메모장 실행
-autoit.run("notepad.exe")
-# 메모장 실행 대기
-autoit.win_wait_active("[CLASS:Notepad]", 3)
-# 메모장에 문자열 입력
-autoit.control_send("[CLASS:Notepad]", "Edit1", "hello world{!}")
-time.sleep(2)
-# 메모장 종료
-autoit.win_close("[CLASS:Notepad]")
-time.sleep(2)
-# 저장안함 버튼 클릭
-autoit.control_click("[Class:#32770]", "Button2")
-
+# # 메모장 실행
+# autoit.run("notepad.exe")
+# # 메모장 실행 대기
+# autoit.win_wait_active("[CLASS:Notepad]", 3)
+# # 메모장에 문자열 입력
+# autoit.control_send("[CLASS:Notepad]", "Edit1", "hello world{!}")
+# time.sleep(2)
+# # 메모장 종료
+# autoit.win_close("[CLASS:Notepad]")
+# time.sleep(2)
+# # 저장안함 버튼 클릭
+# autoit.control_click("[Class:#32770]", "Button2")
 
 # # 대법원 스캔프로그램 대기
 # autoit.win_wait(title="iFormScan", timeout=15)
